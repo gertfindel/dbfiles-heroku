@@ -11,7 +11,7 @@
 # More info at http://herofu.heroku.com/
 
 # CHANGE THESE!
-APPNAME='aicdimages' # also name of DB
+APPNAME='acidimages' # also name of DB
 USERNAME='admin'
 PASSWORD='motherlover'
 
