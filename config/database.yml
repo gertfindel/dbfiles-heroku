@@ -3,7 +3,7 @@ common: &common
   username: root
   password: 
   host: localhost
-  database: <%= APPNAME %>
+  database: acidimages.db
 
 test:
   <<: *common
@@ -12,9 +12,6 @@ development:
   <<: *common
 
 production:
-  encoding: unicode
-  adapter: postgresql
-  username: username
-  port: 5432 
+  <<: *common
   host: hostname
     

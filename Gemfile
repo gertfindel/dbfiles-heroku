@@ -5,4 +5,6 @@ gem 'activerecord'
 
 group :development do
   gem 'foreman'
+  gem 'sqlite3'
+  gem 'sqlite3-ruby', '1.2.5', :require => 'sqlite3'
 end

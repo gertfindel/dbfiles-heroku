@@ -17,7 +17,7 @@ PASSWORD='motherlover'
 
 # EVERYTHING ELSE *SHOULD* BE FINE
 
-%w[rubygems sinatra active_record yaml erb].each { |r| require r }
+%w[rubygems sinatra active_record uri yaml erb].each { |r| require r }
 
 class StoredFile < ActiveRecord::Base
   validates_uniqueness_of :filename
@@ -41,17 +41,18 @@ class CreateStoredFiles < ActiveRecord::Migration
 end
 
 def use_main_app_database
-  db = URI.parse(ENV['DATABASE_URL'] || 'mysql://localhost/'+APPNAME)
 
-  ActiveRecord::Base.establish_connection(
-    :adapter  => db.scheme == 'postgres' ? 'postgresql' : db.scheme,
-    :host     => db.host,
-    :username => db.user,
-    :password => db.password,
-    :database => db.path[1..-1],
-    :encoding => 'utf8'
-
-  )
+  db = File.dirname(__FILE__) + "/config/database.yml"
+    database_config = YAML.load(ERB.new(IO.read(db)).result)
+    env = ENV['RACK_ENV'] == 'production' ? 'production' : 'development'
+    if(env=='production')
+      db = URI.parse(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
+    
+    else
+      puts (database_config[env])
+      (database_config[env]).symbolize_keys
+    end
+  
 end
 
 def check_database
