@@ -12,5 +12,4 @@ development:
   <<: *common
 
 production:
-  <<: *common
   adapter: postgres
