@@ -11,9 +11,9 @@
 # More info at http://herofu.heroku.com/
 
 # CHANGE THESE!
-APPNAME='change_this' # also name of DB
+APPNAME='aicdimages' # also name of DB
 USERNAME='admin'
-PASSWORD='changeme'
+PASSWORD='motherlover'
 
 # EVERYTHING ELSE *SHOULD* BE FINE
 
