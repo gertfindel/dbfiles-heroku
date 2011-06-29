@@ -12,4 +12,9 @@ development:
   <<: *common
 
 production:
-  adapter: postgres
+  encoding: unicode
+  adapter: postgresql
+  username: username
+  port: 5432 
+  host: hostname
+    
