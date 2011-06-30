@@ -1,2 +1,2 @@
-web: bundle exec ruby acid-dbfiles.rb -p $PORT
+web: bundle exec ruby dbfiles.rb -p $PORT
 

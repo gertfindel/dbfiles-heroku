@@ -23,21 +23,22 @@ class StoredFile < ActiveRecord::Base
   validates_uniqueness_of :filename
 end
 
-def use_main_app_database
-
-  db = File.dirname(__FILE__) + "/config/database.yml"
-    database_config = YAML.load(ERB.new(IO.read(db)).result)
-    env = ENV['RACK_ENV'] == 'production' ? 'production' : 'development'
-    if(env=='production')
-      ENV['DATABASE_URL']
-    
-    else
-
-      (database_config[env]).symbolize_keys
+class CreateStoredFiles < ActiveRecord::Migration
+  def self.up
+    # ActiveRecord::Base.logger = Logger.new(STDOUT)
+    create_table :stored_files do |t|
+      t.column :filename, :string, :null => false
+      t.column :content, :binary, :null => false
+      t.column :mime_type, :string
+      t.timestamps
     end
-  
-end
+    add_index :stored_files, :filename, :unique => true
+  end
 
+  def self.down
+    drop_table :stored_files
+  end
+end
 
 def serve_file(filename)
   file = StoredFile.find_by_filename(filename)
@@ -71,7 +72,28 @@ def human_size(bytes)
   bytes > 1024 ? "#{(bytes/1024).to_i} kbytes" : "#{bytes} bytes"
 end
 
-ActiveRecord::Base.establish_connection(use_main_app_database)
+def check_database
+  # check if our tabled are made; if not, make them
+  begin
+    file = StoredFile.find(:first)
+  rescue # rescue is overly broad to work on postgres (heroku) and local (mysql)
+    # create the table
+    CreateStoredFiles.up
+  end
+end
+
+db = URI.parse(ENV['DATABASE_URL'] || 'mysql://localhost/mydb')
+
+ActiveRecord::Base.establish_connection(
+  :adapter  => db.scheme == 'postgres' ? 'postgresql' : db.scheme,
+  :host     => db.host,
+  :username => db.user,
+  :password => db.password,
+  :database => db.path[1..-1],
+  :encoding => 'utf8'
+)
+check_database
+
 
 get '/' do
   serve_file('/index.html')

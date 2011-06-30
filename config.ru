@@ -1,2 +1,2 @@
-require 'acid-dbfiles'
+require 'dbfiles'
 run Sinatra::Application
