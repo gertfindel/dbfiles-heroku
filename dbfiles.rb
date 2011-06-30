@@ -1,21 +1,19 @@
-# HEROFU QUICK START
+# QUICK START
 #
-# 1) Git Clone this as a master branch
-# 2) Change the USERNAME, PASSWORD and APPNAME below
-# 3) commit your updates: git commit -a -m "initial setup"
+# 1) git clone git@github.com:gertfindel/dbfiles-heroku.git && cd dbfiles-heroku
+# 2) Change the USERNAME, PASSWORD
+# 3) git commit -a -m "initial setup"
 # 4) Make sure you have the 'heroku' gem installed (sudo gem install heroku)
-# 5) In the cloned directory, make a new heroku app "heroku create <APPNAME>"
-# 6) Deploy app to heroku with "git push heroku master"
-# 7) Get thee to http://APPNAME.heroku.com/admin to see your handywork
+# 5) heroku create <APPNAME>
+# 6) git push heroku master
+# 7) heroku addons:add shared-database
+# 8) Get thee to http://APPNAME.heroku.com/admin to see your handywork
 #
 # More info at http://herofu.heroku.com/
 
 # CHANGE THESE!
-APPNAME='changethis' # also name of DB
 USERNAME='admin'
 PASSWORD='changethis'
-
-# EVERYTHING ELSE *SHOULD* BE FINE
 
 %w[rubygems sinatra active_record uri yaml erb].each { |r| require r }
 
